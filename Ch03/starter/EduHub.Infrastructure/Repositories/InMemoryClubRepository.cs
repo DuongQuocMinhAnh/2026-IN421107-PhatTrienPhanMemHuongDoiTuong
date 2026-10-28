@@ -15,31 +15,39 @@ public class InMemoryClubRepository : IClubRepository
     public Task<IEnumerable<Club>> GetAllAsync(CancellationToken ct = default)
     {
         // TODO 1a: trả về bản sao danh sách _clubs (dùng Task.FromResult)
-        throw new NotImplementedException();
-        Task.FromResult<IEnumerable<Club>>(_club.ToList());
+        return Task.FromResult<IEnumerable<Club>>(_clubs.ToList());
     }
 
     public Task<Club?> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
-        // TODO 1b: tìm club theo Id; không thấy thì trả null, KHÔNG throw
-        throw new NotImplementedException();
+        return Task.FromResult(_clubs.FirstOrDefault(m => m.Id == id));
     }
 
     public Task AddAsync(Club club, CancellationToken ct = default)
     {
         // TODO 1c: thêm club vào _clubs
-        throw new NotImplementedException();
+        _clubs.Add(club);
+        return Task.CompletedTask;
     }
 
     public Task UpdateAsync(Club club, CancellationToken ct = default)
     {
         // TODO 1d: tìm club cũ theo Id và thay bằng club mới; không thấy thì throw KeyNotFoundException
-        throw new NotImplementedException();
+        var index = _clubs.FindIndex(m => m.Id == club.Id);
+        if(index < 0)
+        {
+            throw new KeyNotFoundException($"Không tìm thấy clubs {club.Id}");
+        }
+        _clubs[index] = club;
+        return Task.CompletedTask;
     }
 
     public Task DeleteAsync(Guid id, CancellationToken ct = default)
     {
         // TODO 1e: xoá club theo Id; không thấy thì throw KeyNotFoundException
-        throw new NotImplementedException();
+        var clubs = _clubs.FirstOrDefault(m => m.Id == id)
+            ?? throw new KeyNotFoundException($"Không tìm thấy clubs {id}");
+        _clubs.Remove(clubs);
+        return Task.CompletedTask;
     }
 }

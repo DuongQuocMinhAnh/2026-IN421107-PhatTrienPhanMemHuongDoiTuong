@@ -67,3 +67,28 @@ public class GetClubsQueryTests
         Assert.Empty(result);
     }
 }
+
+public class GetClubByIdQueryTests
+{
+    [Fact]
+    public async Task GetClubById_WhenClubExists_ReturnsClub()
+    {
+        // Arrange (Chuẩn bị dữ liệu và Mock Moq)
+        var clubId = Guid.NewGuid();
+        var expectedClub = Club.Create("AI Club", "CLB Trí tuệ nhân tạo");
+        
+        var mockRepo = new Mock<IClubRepository>();
+        mockRepo.Setup(r => r.GetByIdAsync(clubId, default))
+            .ReturnsAsync(expectedClub);
+
+        var handler = new GetClubByIdQueryHandler(mockRepo.Object);
+
+        // Act (Thực thi)
+        var result = await handler.HandleAsync(new GetClubByIdQuery(clubId));
+
+        // Assert (Kiểm chứng)
+        Assert.NotNull(result);
+        Assert.Equal("AI Club", result.Name);
+        mockRepo.Verify(r => r.GetByIdAsync(clubId, default), Times.Once);
+    }
+}
