@@ -17,6 +17,6 @@ public class DeleteClubCommandHandler
     {
         // TODO 5: gọi _repository.DeleteAsync(command.Id, ct)
         //         (repository sẽ throw KeyNotFoundException nếu không có club)
-        throw new NotImplementedException();
+        return _repository.DeleteAsync(command.Id, ct);
     }
 }
