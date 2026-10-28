@@ -17,6 +17,6 @@ public class GetClubByIdQueryHandler
     public Task<Club?> HandleAsync(GetClubByIdQuery query, CancellationToken ct = default)
     {
         // TODO 3: gọi _repository.GetByIdAsync; trả null nếu không có club
-        throw new NotImplementedException();
+        return _repository.GetByIdAsync(query.Id, ct);
     }
 }
